@@ -7,4 +7,7 @@ public class ExampleScriptableObject : ScriptableObject
     [SerializeField] public string cardName;
 
     [SerializeField] public int manaCost;
+
+    [SerializeField] public Color cardColor;
+    
 }

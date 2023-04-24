@@ -46,6 +46,7 @@ public class ScriptableObjectPreview : EditorWindow
             //Get scriptable object
             scriptableObjectData.name = AssetDatabase.GUIDToAssetPath(scriptableObjectPath);
             scriptableObjectData.type = ScriptableObjectType.ToString();
+            scriptableObjectData.path = AssetDatabase.GUIDToAssetPath(scriptableObjectPath);
             scriptableObjectData.scriptableObjectInstance = (ScriptableObject)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(scriptableObjectPath), ScriptableObjectType);
             var fields = ScriptableObjectType.GetFields();
             scriptableObjectData.fields.AddRange(fields);
@@ -53,10 +54,14 @@ public class ScriptableObjectPreview : EditorWindow
         }
 
         //show scriptable object data in editor
+        //scrollable horizontally
+        EditorGUILayout.BeginVertical();
+        ShowHeader(scriptableObjectDataList[0]);
         foreach (var scriptableObjectData in scriptableObjectDataList)
         {
             ShowScriptableObjectInstance(scriptableObjectData);
         }
+        EditorGUILayout.EndVertical();
 
     }
     public static Type ByName(string name)
@@ -74,23 +79,42 @@ public class ScriptableObjectPreview : EditorWindow
         return null;
     }
 
-    void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData)
+    void ShowHeader(ScriptableObjectData scriptableObjectData)
     {
-        //show scriptable object data
-        EditorGUILayout.LabelField(scriptableObjectData.name);
-
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.LabelField("ScriptableObject path", GUILayout.Width(300));
+        EditorGUILayout.EndVertical();
         foreach (var field in scriptableObjectData.fields)
         {
-            var value = field.GetValue(scriptableObjectData.scriptableObjectInstance);
-            Debug.Log(value.ToString());
-            EditorGUILayout.LabelField(value.ToString());
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField(field.Name, GUILayout.Width(100));
+            EditorGUILayout.EndVertical();
         }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData)
+    {
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.LabelField(scriptableObjectData.path, GUILayout.Width(300));
+        EditorGUILayout.EndVertical();
+        foreach (var field in scriptableObjectData.fields)
+        {
+            EditorGUILayout.BeginVertical();
+            var value = field.GetValue(scriptableObjectData.scriptableObjectInstance);
+            EditorGUILayout.LabelField(value.ToString(), GUILayout.Width(100));
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.EndHorizontal();
     }
 }
 
 class ScriptableObjectData
 {
     public string name;
+    public string path;
     public string type;
     public ScriptableObject scriptableObjectInstance;
     public List<FieldInfo> fields = new List<FieldInfo>();
