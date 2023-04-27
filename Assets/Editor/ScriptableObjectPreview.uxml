@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/ScriptableObjectPreview.uss?fileID=7433441132597879392&amp;guid=95fd2be858a09824ea8e020a37222325&amp;type=3#ScriptableObjectPreview" />
+    <uie:ObjectField label="Scriptable Object" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" allow-scene-objects="false" name="ScriptableObjectSelection" />
+    <ui:ScrollView name="scroll-view-wrap-example" />
+</ui:UXML>

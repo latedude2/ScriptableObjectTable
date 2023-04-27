@@ -1,0 +1,9 @@
+Label {
+    font-size: 15px;
+    white-space: normal;
+}
+
+Button {
+    width: 50px;
+    height: 50px;
+}

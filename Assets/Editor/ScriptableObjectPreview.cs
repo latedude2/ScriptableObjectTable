@@ -1,43 +1,118 @@
-using System.Collections;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using System.Collections.Generic;
 using System.Reflection;
 using System;
-using UnityEngine;
-using UnityEditor;
-
 
 public class ScriptableObjectPreview : EditorWindow
 {
-    private static ScriptableObjectPreview window;
-    private static ScriptableObject scriptableObject;
-
-    private static void Init()
+    [MenuItem("Enlit Games/Scriptable Object Table")]
+    public static void ShowExample()
     {
-        window = (ScriptableObjectPreview)EditorWindow.GetWindow(typeof(ScriptableObjectPreview));
-        window.Show();
+        var wnd = GetWindow<ScriptableObjectPreview>();
     }
 
-    [MenuItem("EnlitGames/ScriptableObject Preview")]
-    public static void ShowWindow(MenuCommand command)
+    public void CreateGUI()
     {
-        Init();        
-    }
+        // Each editor window contains a root VisualElement object.
+        VisualElement root = rootVisualElement;
 
-    private void OnGUI()
-    {
-        //dropdown for selecting scriptable object
-        scriptableObject = (ScriptableObject)EditorGUILayout.ObjectField(scriptableObject, typeof(ScriptableObject), false);
+        // Import UXML.
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/ScriptableObjectPreview.uxml");
+        VisualElement ScrollViewExample = visualTree.Instantiate();
+        root.Add(ScrollViewExample);
+
+        // Find the scroll view by name.
         
-        //Show nothing if scriptable object is not selected
-        if (scriptableObject == null)
+
+        ObjectField ScriptableObjectSelection = root.Query<ObjectField>("ScriptableObjectSelection");
+
+        ScriptableObjectSelection.RegisterValueChangedCallback((evt) => { PopulateTable(evt); });
+            
+    }
+
+    void PopulateTable(ChangeEvent<UnityEngine.Object> evt)
+    {
+        VisualElement root = rootVisualElement;
+        VisualElement scrollview = root.Query<ScrollView>("scroll-view-wrap-example");
+        scrollview.Clear();
+        if (evt.newValue != null)
         {
-            return;
+            ScriptableObject scriptableObject = (ScriptableObject)evt.newValue;
+            ShowSelectedScriptableObject(scriptableObject, scrollview);
+        }
+    }
+
+    void ShowSelectedScriptableObject(ScriptableObject scriptableObject, VisualElement scrollview)
+    {
+        List<ScriptableObjectData> scriptableObjectDataList = GetScriptableObjectDataList(scriptableObject);
+
+        float pathColumnWidth = ColumnWidthCalculator.FindScriptableObjectPathColumnWidth(scriptableObjectDataList);
+        List<float> columnWidths = ColumnWidthCalculator.FindColumnWidths(scriptableObjectDataList);
+        
+
+        ShowHeader(scriptableObjectDataList[0], scrollview, pathColumnWidth, columnWidths);
+        for(int i = 0; i < scriptableObjectDataList.Count; i++)
+        {
+            ShowScriptableObjectInstance(scriptableObjectDataList[i], scrollview, pathColumnWidth, columnWidths);
         }
         
-        //Get selected scriptable object type
-        Type ScriptableObjectType = ByName(scriptableObject.GetType().Name);
-        
-        //Get all data of scriptable objects of selected type
+    }
+
+    void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float columnWidth, List<float> columnWidths)
+    {
+        VisualElement scriptableObjectInstance = new VisualElement();
+        scriptableObjectInstance.style.flexDirection = FlexDirection.Row;
+        scrollview.Add(scriptableObjectInstance);
+        Label pathLabel = new Label(scriptableObjectData.path);
+        pathLabel.style.width = columnWidth;
+        scriptableObjectInstance.Add(pathLabel);
+        for(int i = 0; i < scriptableObjectData.fields.Count; i++)
+        {
+            Label fieldLabel = new Label(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance).ToString());
+            fieldLabel.style.width = columnWidths[i];
+            scriptableObjectInstance.Add(fieldLabel);
+        }
+    }
+
+    void ShowHeader(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float pathColumnWidth, List<float> columnWidths)
+    {
+        VisualElement header = new VisualElement();
+        header.style.flexDirection = FlexDirection.Row;
+        scrollview.Add(header);
+        Label pathHeader = new Label("File Path");
+        pathHeader.style.width = pathColumnWidth;
+        header.Add(pathHeader);
+        for(int i = 0; i < scriptableObjectData.fields.Count; i++)
+        {
+            Label fieldHeader = new Label(scriptableObjectData.fields[i].Name);
+            fieldHeader.style.width = columnWidths[i];
+            header.Add(fieldHeader);
+        }
+    }
+
+
+
+    public static Type GetTypeFromName(string name)
+    {
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (var assembly in assemblies)
+        {
+            var tt = assembly.GetType(name);
+            if (tt != null)
+            {
+                return tt;
+            }
+        }
+
+        return null;
+    }
+
+    List<ScriptableObjectData> GetScriptableObjectDataList(ScriptableObject scriptableObject)
+    {
+        Type ScriptableObjectType = GetTypeFromName(scriptableObject.GetType().Name);
         List<ScriptableObjectData> scriptableObjectDataList = new List<ScriptableObjectData>();
         var scriptableObjectPaths = AssetDatabase.FindAssets("t:" + scriptableObject.GetType().Name);
         foreach (var scriptableObjectPath in scriptableObjectPaths)
@@ -53,69 +128,7 @@ public class ScriptableObjectPreview : EditorWindow
             scriptableObjectDataList.Add(scriptableObjectData);
         }
 
-        //show scriptable object data in editor
-        //scrollable horizontally
-        EditorGUILayout.BeginVertical();
-        ShowHeader(scriptableObjectDataList[0]);
-        foreach (var scriptableObjectData in scriptableObjectDataList)
-        {
-            ShowScriptableObjectInstance(scriptableObjectData);
-        }
-        EditorGUILayout.EndVertical();
-
-    }
-    public static Type ByName(string name)
-    {
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (var assembly in assemblies)
-        {
-            var tt = assembly.GetType(name);
-            if (tt != null)
-            {
-                return tt;
-            }
-        }
-
-        return null;
+        return scriptableObjectDataList;
     }
 
-    void ShowHeader(ScriptableObjectData scriptableObjectData)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.BeginVertical();
-        EditorGUILayout.LabelField("ScriptableObject path", GUILayout.Width(300));
-        EditorGUILayout.EndVertical();
-        foreach (var field in scriptableObjectData.fields)
-        {
-            EditorGUILayout.BeginVertical();
-            EditorGUILayout.LabelField(field.Name, GUILayout.Width(100));
-            EditorGUILayout.EndVertical();
-        }
-        EditorGUILayout.EndHorizontal();
-    }
-
-    void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData)
-    {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.BeginVertical();
-        EditorGUILayout.LabelField(scriptableObjectData.path, GUILayout.Width(300));
-        EditorGUILayout.EndVertical();
-        foreach (var field in scriptableObjectData.fields)
-        {
-            EditorGUILayout.BeginVertical();
-            var value = field.GetValue(scriptableObjectData.scriptableObjectInstance);
-            EditorGUILayout.LabelField(value.ToString(), GUILayout.Width(100));
-            EditorGUILayout.EndVertical();
-        }
-        EditorGUILayout.EndHorizontal();
-    }
-}
-
-class ScriptableObjectData
-{
-    public string name;
-    public string path;
-    public string type;
-    public ScriptableObject scriptableObjectInstance;
-    public List<FieldInfo> fields = new List<FieldInfo>();
 }
