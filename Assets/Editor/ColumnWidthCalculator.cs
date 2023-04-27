@@ -35,6 +35,9 @@ public static class ColumnWidthCalculator
                 //if type is color, skip
                 if (scriptableObjectData.fields[i].FieldType == typeof(Color) || scriptableObjectData.fields[i].FieldType == typeof(Color32))
                     continue;
+                //if type is GameObject or Transform, skip
+                if (scriptableObjectData.fields[i].FieldType == typeof(GameObject) || scriptableObjectData.fields[i].FieldType == typeof(Transform))
+                    continue;
 
                 if (fieldValueWidth > columnWidths[i])
                 {

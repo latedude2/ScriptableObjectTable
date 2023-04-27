@@ -68,32 +68,39 @@ public class ScriptableObjectPreview : EditorWindow
 
     void ShowHeader(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float pathColumnWidth, List<float> columnWidths)
     {
-        VisualElement header = new VisualElement();
-        header.style.flexDirection = FlexDirection.Row;
-        scrollview.Add(header);
+        VisualElement headerRow = new VisualElement();
+        headerRow.style.flexDirection = FlexDirection.Row;
+        scrollview.Add(headerRow);
         Label pathHeader = new Label("File Path");
         pathHeader.style.width = pathColumnWidth;
-        header.Add(pathHeader);
+        headerRow.Add(pathHeader);
         for(int i = 0; i < scriptableObjectData.fields.Count; i++)
         {
+            
             Label fieldHeader = new Label(scriptableObjectData.fields[i].Name);
             fieldHeader.style.width = columnWidths[i];
-            header.Add(fieldHeader);
+
+            if(i % 2 == 0)
+            {
+                fieldHeader.style.backgroundColor = new Color(0.3f, 0.3f, 0.3f);
+            }
+            headerRow.Add(fieldHeader);
         }
     }
 
     void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float columnWidth, List<float> columnWidths)
     {
-        VisualElement scriptableObjectInstance = new VisualElement();
-        scriptableObjectInstance.style.flexDirection = FlexDirection.Row;
-        scrollview.Add(scriptableObjectInstance);
+        VisualElement scriptableObjectInstanceRow = new VisualElement();
+        scriptableObjectInstanceRow.style.flexDirection = FlexDirection.Row;
+        scrollview.Add(scriptableObjectInstanceRow);
         Label pathLabel = new Label(scriptableObjectData.path);
         pathLabel.style.width = columnWidth;
-        scriptableObjectInstance.Add(pathLabel);
+        scriptableObjectInstanceRow.Add(pathLabel);
         for(int i = 0; i < scriptableObjectData.fields.Count; i++)
         {
+            
             VisualElement element = MakeVisualElementForValue(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance));
-
+            
             SerializedObject so = new SerializedObject(scriptableObjectData.scriptableObjectInstance);
 
             if(element is IBindable)
@@ -101,9 +108,16 @@ public class ScriptableObjectPreview : EditorWindow
                 SerializedProperty property = so.FindProperty(scriptableObjectData.fields[i].Name);
                 ((IBindable)element).BindProperty(property);
             }
+            
 
             element.style.width = columnWidths[i];
-            scriptableObjectInstance.Add(element);
+
+            //set background of every second column to grey
+            if(i % 2 == 0)
+            {
+                element.style.backgroundColor = new Color(0.3f, 0.3f, 0.3f);
+            }
+            scriptableObjectInstanceRow.Add(element);
         }
     }
 

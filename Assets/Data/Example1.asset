@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed550856188fa4a47b58819f98f30bd5, type: 3}
   m_Name: Example1
   m_EditorClassIdentifier: 
-  cardName: 
+  cardName: Test
   manaCost: 1
   cardColor: {r: 0.8113208, g: 0.13394445, b: 0.13394445, a: 0}
   intTest: 123
@@ -21,7 +21,7 @@ MonoBehaviour:
   boolTest: 1
   vector2Test: {x: 2.91, y: 2.52}
   vector3Test: {x: 3.61, y: 0.67, z: 1.71}
-  vector4Test: {x: 3.21, y: 1.38, z: 1.83, w: 1.44}
+  vector4Test: {x: 3.21, y: 1.38, z: 1.83, w: 17.53}
   colorTest: {r: 0.8962264, g: 0.20714669, b: 0.20714669, a: 0}
   color32Test:
     serializedVersion: 2
