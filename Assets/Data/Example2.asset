@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Example2
   m_EditorClassIdentifier: 
   cardName: Example 2
-  manaCost: 2147483647
-  cardColor: {r: 0.6698113, g: 0.25591847, b: 0.25591847, a: 0}
+  manaCost: 5
+  cardColor: {r: 0.8773585, g: 0.7738964, b: 0.7738964, a: 0}

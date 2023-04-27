@@ -90,6 +90,16 @@ public class ScriptableObjectPreview : EditorWindow
         for(int i = 0; i < scriptableObjectData.fields.Count; i++)
         {
             VisualElement element = MakeVisualElementForValue(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance));
+            // Create the SerializedObject from the current selection
+            SerializedObject so = new SerializedObject(scriptableObjectData.scriptableObjectInstance);
+
+            //if element implements is bindable
+            if(element is IBindable)
+            {
+                SerializedProperty property = so.FindProperty(scriptableObjectData.fields[i].Name);
+                ((IBindable)element).BindProperty(property);
+            }
+
             element.style.width = columnWidths[i];
             scriptableObjectInstance.Add(element);
         }
@@ -189,7 +199,7 @@ public class ScriptableObjectPreview : EditorWindow
             visualElement = new TextField();
             ((TextField)visualElement).SetValueWithoutNotify((string)value);
         }
-        
+
 
         
         

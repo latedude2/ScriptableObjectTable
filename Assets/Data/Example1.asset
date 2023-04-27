@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed550856188fa4a47b58819f98f30bd5, type: 3}
   m_Name: Example1
   m_EditorClassIdentifier: 
-  cardName: Very long name for a card
+  cardName: testing testing
   manaCost: 1
-  cardColor: {r: 0, g: 0, b: 0, a: 0}
+  cardColor: {r: 0.7924528, g: 0.6541474, b: 0.6541474, a: 0}
