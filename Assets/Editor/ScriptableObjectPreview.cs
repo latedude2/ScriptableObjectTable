@@ -61,21 +61,7 @@ public class ScriptableObjectPreview : EditorWindow
         
     }
 
-    void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float columnWidth, List<float> columnWidths)
-    {
-        VisualElement scriptableObjectInstance = new VisualElement();
-        scriptableObjectInstance.style.flexDirection = FlexDirection.Row;
-        scrollview.Add(scriptableObjectInstance);
-        Label pathLabel = new Label(scriptableObjectData.path);
-        pathLabel.style.width = columnWidth;
-        scriptableObjectInstance.Add(pathLabel);
-        for(int i = 0; i < scriptableObjectData.fields.Count; i++)
-        {
-            Label fieldLabel = new Label(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance).ToString());
-            fieldLabel.style.width = columnWidths[i];
-            scriptableObjectInstance.Add(fieldLabel);
-        }
-    }
+    
 
     void ShowHeader(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float pathColumnWidth, List<float> columnWidths)
     {
@@ -91,6 +77,124 @@ public class ScriptableObjectPreview : EditorWindow
             fieldHeader.style.width = columnWidths[i];
             header.Add(fieldHeader);
         }
+    }
+
+    void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float columnWidth, List<float> columnWidths)
+    {
+        VisualElement scriptableObjectInstance = new VisualElement();
+        scriptableObjectInstance.style.flexDirection = FlexDirection.Row;
+        scrollview.Add(scriptableObjectInstance);
+        Label pathLabel = new Label(scriptableObjectData.path);
+        pathLabel.style.width = columnWidth;
+        scriptableObjectInstance.Add(pathLabel);
+        for(int i = 0; i < scriptableObjectData.fields.Count; i++)
+        {
+            VisualElement element = MakeVisualElementForValue(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance));
+            element.style.width = columnWidths[i];
+            scriptableObjectInstance.Add(element);
+        }
+    }
+
+    VisualElement MakeVisualElementForValue(object value)
+    {
+        VisualElement visualElement = new Label(value.ToString());
+        Debug.Log(value.GetType());
+        if(value.GetType() == typeof(UnityEngine.Color))
+        {
+            visualElement = new ColorField();
+            ((ColorField)visualElement).SetValueWithoutNotify((Color)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Vector2))
+        {
+            visualElement = new Vector2Field();
+            ((Vector2Field)visualElement).SetValueWithoutNotify((Vector2)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Vector3))
+        {
+            visualElement = new Vector3Field();
+            ((Vector3Field)visualElement).SetValueWithoutNotify((Vector3)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Vector4))
+        {
+            visualElement = new Vector4Field();
+            ((Vector4Field)visualElement).SetValueWithoutNotify((Vector4)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Rect))
+        {
+            visualElement = new RectField();
+            ((RectField)visualElement).SetValueWithoutNotify((Rect)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Bounds))
+        {
+            visualElement = new BoundsField();
+            ((BoundsField)visualElement).SetValueWithoutNotify((Bounds)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Object))
+        {
+            visualElement = new ObjectField();
+            ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Object)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.AnimationCurve))
+        {
+            visualElement = new CurveField();
+            ((CurveField)visualElement).SetValueWithoutNotify((AnimationCurve)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Gradient))
+        {
+            visualElement = new GradientField();
+            ((GradientField)visualElement).SetValueWithoutNotify((Gradient)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.LayerMask))
+        {
+            visualElement = new LayerMaskField();
+            ((LayerMaskField)visualElement).SetValueWithoutNotify((LayerMask)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.RectInt))
+        {
+            visualElement = new RectIntField();
+            ((RectIntField)visualElement).SetValueWithoutNotify((RectInt)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.BoundsInt))
+        {
+            visualElement = new BoundsIntField();
+            ((BoundsIntField)visualElement).SetValueWithoutNotify((BoundsInt)value);
+        }
+        if(value.GetType() == typeof(Enum))
+        {
+            visualElement = new EnumField();
+            ((EnumField)visualElement).SetValueWithoutNotify((Enum)value);
+        }
+        if(value.GetType() == typeof(bool))
+        {
+            visualElement = new Toggle();
+            ((Toggle)visualElement).SetValueWithoutNotify((bool)value);
+        }
+        if(value.GetType() == typeof(int))
+        {
+            visualElement = new IntegerField();
+            ((IntegerField)visualElement).SetValueWithoutNotify((int)value);
+        }
+        if(value.GetType() == typeof(float))
+        {
+            visualElement = new FloatField();
+            ((FloatField)visualElement).SetValueWithoutNotify((float)value);
+        }
+        if(value.GetType() == typeof(double))
+        {
+            visualElement = new DoubleField();
+            ((DoubleField)visualElement).SetValueWithoutNotify((double)value);
+        }
+        if(value.GetType() == typeof(string) || value.GetType() == typeof(String) || value.GetType() == typeof(char))
+        {
+            visualElement = new TextField();
+            ((TextField)visualElement).SetValueWithoutNotify((string)value);
+        }
+        
+
+        
+        
+        
+        return visualElement;
     }
 
 
