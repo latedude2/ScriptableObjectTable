@@ -114,7 +114,6 @@ public class ScriptableObjectPreview : EditorWindow
             return new Label("null");
         }
         VisualElement visualElement = new Label(value.ToString());
-        Debug.Log(value.GetType());
         if(value.GetType() == typeof(UnityEngine.Color))
         {
             visualElement = new ColorField();

@@ -3,6 +3,13 @@ Label {
     white-space: normal;
 }
 
+Label, Input, FloatField, ColorField, TextField, IntegerField, ObjectField, IntField, Vector2Field, Vector3Field, Vector4Field, DoubleField, Toggle, EnumField, BoundsIntField, RectIntField, LayerMaskField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0px;
+    border-width: 0px;
+}
+
 Button {
     width: 50px;
     height: 50px;

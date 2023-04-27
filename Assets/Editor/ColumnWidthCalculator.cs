@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
 
 public static class ColumnWidthCalculator
 {
@@ -30,6 +32,9 @@ public static class ColumnWidthCalculator
                 float fieldValueWidth = 0;
                 if(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance) != null)
                     fieldValueWidth = ConvertToColumnWidth(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance).ToString());
+                //if type is color, skip
+                if (scriptableObjectData.fields[i].FieldType == typeof(Color) || scriptableObjectData.fields[i].FieldType == typeof(Color32))
+                    continue;
 
                 if (fieldValueWidth > columnWidths[i])
                 {
@@ -42,6 +47,6 @@ public static class ColumnWidthCalculator
 
     public static float ConvertToColumnWidth(string text)
     {
-        return text.Length * 8.7f + 15;
+        return text.Length * 8.7f + 30;
     }
 }
