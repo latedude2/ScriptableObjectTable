@@ -1,5 +1,5 @@
 {
-    "name": "EnlitGames.ScriptableObjectTable",
+    "name": "com.enlit-games.scriptable-object-table",
     "rootNamespace": "",
     "references": [
         "GUID:343deaaf83e0cee4ca978e7df0b80d21"
