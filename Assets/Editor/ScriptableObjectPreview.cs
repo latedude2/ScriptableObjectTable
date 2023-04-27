@@ -8,6 +8,8 @@ using System;
 
 public class ScriptableObjectPreview : EditorWindow
 {
+    static ScriptableObject selectedScriptableObject;
+    
     [MenuItem("Enlit Games/Scriptable Object Table")]
     public static void ShowExample()
     {
@@ -23,14 +25,14 @@ public class ScriptableObjectPreview : EditorWindow
         var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/ScriptableObjectPreview.uxml");
         VisualElement ScrollViewExample = visualTree.Instantiate();
         root.Add(ScrollViewExample);
-
-        // Find the scroll view by name.
         
 
         ObjectField ScriptableObjectSelection = root.Query<ObjectField>("ScriptableObjectSelection");
+        
 
         ScriptableObjectSelection.RegisterValueChangedCallback((evt) => { PopulateTable(evt); });
-            
+
+        ScriptableObjectSelection.value = selectedScriptableObject;
     }
 
     void PopulateTable(ChangeEvent<UnityEngine.Object> evt)
@@ -41,6 +43,7 @@ public class ScriptableObjectPreview : EditorWindow
         if (evt.newValue != null)
         {
             ScriptableObject scriptableObject = (ScriptableObject)evt.newValue;
+            selectedScriptableObject = scriptableObject;
             ShowSelectedScriptableObject(scriptableObject, scrollview);
         }
     }
@@ -90,10 +93,9 @@ public class ScriptableObjectPreview : EditorWindow
         for(int i = 0; i < scriptableObjectData.fields.Count; i++)
         {
             VisualElement element = MakeVisualElementForValue(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance));
-            // Create the SerializedObject from the current selection
+
             SerializedObject so = new SerializedObject(scriptableObjectData.scriptableObjectInstance);
 
-            //if element implements is bindable
             if(element is IBindable)
             {
                 SerializedProperty property = so.FindProperty(scriptableObjectData.fields[i].Name);
@@ -107,12 +109,21 @@ public class ScriptableObjectPreview : EditorWindow
 
     VisualElement MakeVisualElementForValue(object value)
     {
+        if(value == null)
+        {
+            return new Label("null");
+        }
         VisualElement visualElement = new Label(value.ToString());
         Debug.Log(value.GetType());
         if(value.GetType() == typeof(UnityEngine.Color))
         {
             visualElement = new ColorField();
             ((ColorField)visualElement).SetValueWithoutNotify((Color)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Color32))
+        {
+            visualElement = new ColorField();
+            ((ColorField)visualElement).SetValueWithoutNotify((Color32)value);
         }
         if(value.GetType() == typeof(UnityEngine.Vector2))
         {
@@ -143,6 +154,21 @@ public class ScriptableObjectPreview : EditorWindow
         {
             visualElement = new ObjectField();
             ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Object)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.GameObject))
+        {
+            visualElement = new ObjectField();
+            ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.GameObject)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Component))
+        {
+            visualElement = new ObjectField();
+            ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Component)value);
+        }
+        if(value.GetType() == typeof(UnityEngine.Transform))
+        {
+            visualElement = new ObjectField();
+            ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Transform)value);
         }
         if(value.GetType() == typeof(UnityEngine.AnimationCurve))
         {

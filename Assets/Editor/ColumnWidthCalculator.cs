@@ -27,7 +27,10 @@ public static class ColumnWidthCalculator
         {
             for(int i = 0; i < scriptableObjectData.fields.Count; i++)
             {
-                float fieldValueWidth = ConvertToColumnWidth(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance).ToString());
+                float fieldValueWidth = 0;
+                if(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance) != null)
+                    fieldValueWidth = ConvertToColumnWidth(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance).ToString());
+
                 if (fieldValueWidth > columnWidths[i])
                 {
                     columnWidths[i] = fieldValueWidth;
