@@ -1,13 +1,5 @@
 {
   "dependencies": {
-    "com.enlit-games.scriptable-object-table": {
-      "version": "file:ScriptableObjectTable",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.ugui": ""
-      }
-    },
     "com.unity.asset-store-tools": {
       "version": "file:com.unity.asset-store-tools",
       "depth": 0,

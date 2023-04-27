@@ -24,7 +24,7 @@ namespace EnlitGames.ScriptableObjectTable
             VisualElement root = rootVisualElement;
 
             // Import UXML.
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Packages/com.enlit-games.scriptable-object-table/Editor/ScriptableObjectPreview.uxml");
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Plugins/ScriptableObjectTable/Editor/ScriptableObjectPreview.uxml");
             VisualElement ScrollViewExample = visualTree.Instantiate();
             root.Add(ScrollViewExample);
             
@@ -273,7 +273,6 @@ namespace EnlitGames.ScriptableObjectTable
             foreach (var scriptableObjectPath in scriptableObjectPaths)
             {
                 ScriptableObjectData scriptableObjectData = new ScriptableObjectData();
-                //Get scriptable object
                 scriptableObjectData.name = AssetDatabase.GUIDToAssetPath(scriptableObjectPath);
                 scriptableObjectData.type = ScriptableObjectType.ToString();
                 scriptableObjectData.path = AssetDatabase.GUIDToAssetPath(scriptableObjectPath);
