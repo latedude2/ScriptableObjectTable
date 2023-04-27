@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.enlit-games.scriptable-object-table": {
+      "version": "file:ScriptableObjectTable",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.ugui": ""
+      }
+    },
     "com.unity.collab-proxy": {
       "version": "2.0.3",
       "depth": 0,
