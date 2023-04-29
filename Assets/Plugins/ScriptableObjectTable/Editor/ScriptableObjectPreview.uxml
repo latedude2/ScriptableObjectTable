@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/Plugins/ScriptableObjectTable/Editor/ScriptableObjectPreview.uss?fileID=7433441132597879392&amp;guid=26859185bfa01bb41abab00aa79710c7&amp;type=3#ScriptableObjectPreview" />
     <uie:ObjectField label="Scriptable Object" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" allow-scene-objects="false" name="ScriptableObjectSelection" style="height: 23px; flex-direction: row-reverse; flex-wrap: wrap; width: 366px;" />
-    <ui:Toggle label="Show read-only values" name="HideReadOnlyFields" />
+    <ui:Toggle label="Hide read-only values" name="HideReadOnlyFields" />
     <ui:ScrollView name="scroll-view-wrap-example" />
     <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="Warning" />
 </ui:UXML>
