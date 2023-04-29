@@ -23,6 +23,7 @@ public class ExampleScriptableObject : ScriptableObject
     [SerializeField] public Transform transformTest;
     [SerializeField] public GameObject gameObjectTest;
     [SerializeField] public ExampleScriptableObject scriptableObject;
+    [SerializeField] public int[] intArray;
     [SerializeField] public ExampleScriptableObject[] scriptableObjectArray;
     [SerializeField] public Sprite exampleSprite;
     [SerializeField] public NestedClass nestedClassTest;

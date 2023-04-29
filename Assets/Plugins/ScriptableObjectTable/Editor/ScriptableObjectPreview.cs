@@ -123,11 +123,17 @@ namespace EnlitGames.ScriptableObjectTable
             scrollview.Add(scriptableObjectInstanceRow);
             Label pathLabel = new Label(scriptableObjectData.path);
             pathLabel.style.width = columnWidth;
+            pathLabel.RegisterCallback<MouseUpEvent>((evt) => { Selection.activeObject = scriptableObjectData.scriptableObjectInstance; });
+
             scriptableObjectInstanceRow.Add(pathLabel);
             for(int i = 0; i < scriptableObjectData.fields.Count; i++)
             {
-                
                 VisualElement element = MakeVisualElementForValue(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance));
+                string fieldName = scriptableObjectData.fields[i].Name;
+                if(element is Label)
+                {
+                    element.RegisterCallback<MouseUpEvent>((evt) => { Selection.activeObject = scriptableObjectData.scriptableObjectInstance; });
+                }
                 element.tooltip = scriptableObjectData.fields[i].Name;
                 
                 SerializedObject so = new SerializedObject(scriptableObjectData.scriptableObjectInstance);
