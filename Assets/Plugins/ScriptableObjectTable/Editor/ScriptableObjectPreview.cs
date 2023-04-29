@@ -10,6 +10,8 @@ namespace EnlitGames.ScriptableObjectTable
     public class ScriptableObjectPreview : EditorWindow
     {
         static ScriptableObject selectedScriptableObject;
+        static bool showWarningForUndisplayedFields = false;
+        static bool hideReadOnlyFields = false;
         
         [MenuItem("Enlit Games/Scriptable Object Table")]
         public static void ShowExample()
@@ -20,31 +22,41 @@ namespace EnlitGames.ScriptableObjectTable
 
         public void CreateGUI()
         {
+            showWarningForUndisplayedFields = false;
+
             // Each editor window contains a root VisualElement object.
             VisualElement root = rootVisualElement;
-
+            
             // Import UXML.
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Plugins/ScriptableObjectTable/Editor/ScriptableObjectPreview.uxml");
-            VisualElement ScrollViewExample = visualTree.Instantiate();
-            root.Add(ScrollViewExample);
+            VisualElement ScriptableObjectTable = visualTree.Instantiate();
+            root.Add(ScriptableObjectTable);
             
 
             ObjectField ScriptableObjectSelection = root.Query<ObjectField>("ScriptableObjectSelection");
-            
-
-            ScriptableObjectSelection.RegisterValueChangedCallback((evt) => { PopulateTable(evt); });
-
+            ScriptableObjectSelection.RegisterValueChangedCallback((evt) => { PopulateTable((ScriptableObject)evt.newValue); });
             ScriptableObjectSelection.value = selectedScriptableObject;
+
+            Toggle HideReadOnlyFields = root.Query<Toggle>("HideReadOnlyFields");
+            HideReadOnlyFields.RegisterValueChangedCallback((evt) => { HideReadOnlyFieldsToggled(evt.newValue); });
+            HideReadOnlyFields.value = hideReadOnlyFields;
+            
         }
 
-        void PopulateTable(ChangeEvent<UnityEngine.Object> evt)
+        void HideReadOnlyFieldsToggled(bool newValue)
+        {
+            hideReadOnlyFields = newValue;
+            PopulateTable(selectedScriptableObject);
+        }
+
+        void PopulateTable(ScriptableObject newSelectedScriptableObject)
         {
             VisualElement root = rootVisualElement;
             VisualElement scrollview = root.Query<ScrollView>("scroll-view-wrap-example");
             scrollview.Clear();
-            if (evt.newValue != null)
+            if (newSelectedScriptableObject != null)
             {
-                ScriptableObject scriptableObject = (ScriptableObject)evt.newValue;
+                ScriptableObject scriptableObject = (ScriptableObject)newSelectedScriptableObject;
                 selectedScriptableObject = scriptableObject;
                 ShowSelectedScriptableObject(scriptableObject, scrollview);
             }
@@ -57,16 +69,25 @@ namespace EnlitGames.ScriptableObjectTable
             float pathColumnWidth = ColumnWidthCalculator.FindScriptableObjectPathColumnWidth(scriptableObjectDataList);
             List<float> columnWidths = ColumnWidthCalculator.FindColumnWidths(scriptableObjectDataList);
             
+            if(showWarningForUndisplayedFields)
+            {
+                ShowWarningForUndisplayedFields();
+            }
 
             ShowHeader(scriptableObjectDataList[0], scrollview, pathColumnWidth, columnWidths);
             for(int i = 0; i < scriptableObjectDataList.Count; i++)
             {
                 ShowScriptableObjectInstance(scriptableObjectDataList[i], scrollview, pathColumnWidth, columnWidths);
             }
-            
         }
-
         
+        void ShowWarningForUndisplayedFields()
+        {
+            Label warning = rootVisualElement.Query<Label>("Warning");
+            warning.text = "Some fields are not displayed because they are not serializable. You can make them serializable by adding the [SerializeField] attribute to them.";
+            warning.style.color = Color.red;
+            rootVisualElement.Add(warning);
+        }
 
         void ShowHeader(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float pathColumnWidth, List<float> columnWidths)
         {
@@ -102,16 +123,19 @@ namespace EnlitGames.ScriptableObjectTable
             {
                 
                 VisualElement element = MakeVisualElementForValue(scriptableObjectData.fields[i].GetValue(scriptableObjectData.scriptableObjectInstance));
+                element.tooltip = scriptableObjectData.fields[i].Name;
                 
                 SerializedObject so = new SerializedObject(scriptableObjectData.scriptableObjectInstance);
 
                 if(element is IBindable)
                 {
                     SerializedProperty property = so.FindProperty(scriptableObjectData.fields[i].Name);
-                    ((IBindable)element).BindProperty(property);
+                    if(property != null)
+                        ((IBindable)element).BindProperty(property);
+                    else 
+                        UnityEngine.Debug.LogWarning("Could not find property " + scriptableObjectData.fields[i].Name + " on " + scriptableObjectData.scriptableObjectInstance.name);
                 }
                 
-
                 element.style.width = columnWidths[i];
 
                 //set background of every second column to grey
@@ -168,22 +192,32 @@ namespace EnlitGames.ScriptableObjectTable
             if(value.GetType() == typeof(UnityEngine.Object))
             {
                 visualElement = new ObjectField();
+                ((ObjectField)visualElement).objectType = typeof(UnityEngine.Object);
                 ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Object)value);
             }
             if(value.GetType() == typeof(UnityEngine.GameObject))
             {
                 visualElement = new ObjectField();
+                ((ObjectField)visualElement).objectType = typeof(UnityEngine.GameObject);
                 ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.GameObject)value);
             }
             if(value.GetType() == typeof(UnityEngine.Component))
             {
                 visualElement = new ObjectField();
+                ((ObjectField)visualElement).objectType = typeof(UnityEngine.Component);
                 ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Component)value);
             }
             if(value.GetType() == typeof(UnityEngine.Transform))
             {
                 visualElement = new ObjectField();
+                ((ObjectField)visualElement).objectType = typeof(UnityEngine.Transform);
                 ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Transform)value);
+            }
+            if(value.GetType() == typeof(Sprite))
+            {
+                visualElement = new ObjectField();
+                ((ObjectField)visualElement).objectType = typeof(Sprite);
+                ((ObjectField)visualElement).SetValueWithoutNotify((Sprite)value);
             }
             if(value.GetType() == typeof(UnityEngine.AnimationCurve))
             {
@@ -210,7 +244,7 @@ namespace EnlitGames.ScriptableObjectTable
                 visualElement = new BoundsIntField();
                 ((BoundsIntField)visualElement).SetValueWithoutNotify((BoundsInt)value);
             }
-            if(value.GetType() == typeof(Enum))
+            if(value.GetType() == typeof(Enum) || value.GetType().IsEnum)
             {
                 visualElement = new EnumField();
                 ((EnumField)visualElement).SetValueWithoutNotify((Enum)value);
@@ -240,10 +274,6 @@ namespace EnlitGames.ScriptableObjectTable
                 visualElement = new TextField();
                 ((TextField)visualElement).SetValueWithoutNotify((string)value);
             }
-
-
-            
-            
             
             return visualElement;
         }
@@ -261,15 +291,18 @@ namespace EnlitGames.ScriptableObjectTable
                     return tt;
                 }
             }
+            UnityEngine.Debug.LogError("Type not found: " + name);
 
             return null;
         }
 
         List<ScriptableObjectData> GetScriptableObjectDataList(ScriptableObject scriptableObject)
         {
-            Type ScriptableObjectType = GetTypeFromName(scriptableObject.GetType().Name);
+            Type ScriptableObjectType = GetTypeFromName(scriptableObject.GetType().FullName);
+            var fields = GetFieldsToDisplay(scriptableObject);
+            
             List<ScriptableObjectData> scriptableObjectDataList = new List<ScriptableObjectData>();
-            var scriptableObjectPaths = AssetDatabase.FindAssets("t:" + scriptableObject.GetType().Name);
+            var scriptableObjectPaths = AssetDatabase.FindAssets("t:" + scriptableObject.GetType().FullName);
             foreach (var scriptableObjectPath in scriptableObjectPaths)
             {
                 ScriptableObjectData scriptableObjectData = new ScriptableObjectData();
@@ -277,12 +310,50 @@ namespace EnlitGames.ScriptableObjectTable
                 scriptableObjectData.type = ScriptableObjectType.ToString();
                 scriptableObjectData.path = AssetDatabase.GUIDToAssetPath(scriptableObjectPath);
                 scriptableObjectData.scriptableObjectInstance = (ScriptableObject)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(scriptableObjectPath), ScriptableObjectType);
-                var fields = ScriptableObjectType.GetFields();
+
                 scriptableObjectData.fields.AddRange(fields);
+                
                 scriptableObjectDataList.Add(scriptableObjectData);
             }
 
             return scriptableObjectDataList;
+        }
+
+        List<FieldInfo> GetFieldsToDisplay(ScriptableObject scriptableObject)
+        {
+            Type ScriptableObjectType = GetTypeFromName(scriptableObject.GetType().FullName);
+            var scriptableObjectPaths = AssetDatabase.FindAssets("t:" + scriptableObject.GetType().FullName);
+            var scriptableObjectInstance = (ScriptableObject)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(scriptableObjectPaths[0]), ScriptableObjectType);
+            
+            List<FieldInfo> fields = new List<FieldInfo>(ScriptableObjectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
+            //remove fields that are not supported
+            List<FieldInfo> invalidFieldsRemoved = new List<FieldInfo>(fields);
+            foreach(var field in fields)
+            {
+                SerializedObject so = new SerializedObject(scriptableObjectInstance);
+                SerializedProperty property = so.FindProperty(field.Name);
+                if(property == null)
+                {
+                    showWarningForUndisplayedFields = true;
+                    invalidFieldsRemoved.Remove(field);
+                }
+                else if(hideReadOnlyFields)
+                {
+                    if(field.IsInitOnly)
+                    {
+                        invalidFieldsRemoved.Remove(field);
+                    }
+                    if(MakeVisualElementForValue(field.GetValue(scriptableObjectInstance)) is Label)
+                    {
+                        invalidFieldsRemoved.Remove(field);
+                    }
+                }
+
+                    
+            }
+                
+            return invalidFieldsRemoved;
+
         }
     }
 }
