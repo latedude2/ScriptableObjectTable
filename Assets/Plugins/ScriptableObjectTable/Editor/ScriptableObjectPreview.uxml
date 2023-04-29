@@ -3,5 +3,5 @@
     <uie:ObjectField label="Scriptable Object" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" allow-scene-objects="false" name="ScriptableObjectSelection" style="height: 23px; flex-direction: row-reverse; flex-wrap: wrap; width: 366px;" />
     <ui:Toggle label="Hide read-only values" name="HideReadOnlyFields" />
     <ui:ScrollView name="scroll-view-wrap-example" />
-    <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="Warning" />
+    <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="Warning" class="Warning" />
 </ui:UXML>

@@ -1,7 +1,135 @@
-Label, Input, FloatField, ColorField, TextField, IntegerField, ObjectField, IntField, Vector2Field, Vector3Field, Vector4Field, DoubleField, Toggle, EnumField, BoundsIntField, RectIntField, LayerMaskField {
+Label {
     font-size: 15px;
     margin: 1px;
-    padding: 0px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+Input {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+FloatField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+ColorField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+TextField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+IntegerField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+ObjectField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+IntField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+Vector2Field {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+Vector3Field {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+Vector4Field {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+DoubleField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+Toggle {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+EnumField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+BoundsIntField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+RectIntField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
+    border-width: 1px;
+    border-right-color: grey;
+}
+
+LayerMaskField {
+    font-size: 15px;
+    margin: 1px;
+    padding: 0;
     border-width: 1px;
     border-right-color: grey;
 }
@@ -9,4 +137,8 @@ Label, Input, FloatField, ColorField, TextField, IntegerField, ObjectField, IntF
 Button {
     width: 50px;
     height: 50px;
+}
+
+.Warning {
+    color: red;
 }

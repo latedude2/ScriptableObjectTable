@@ -73,6 +73,7 @@ namespace EnlitGames.ScriptableObjectTable
             {
                 ShowWarningForUndisplayedFields();
             }
+            else HideWarningForUndisplayedFields();
 
             ShowHeader(scriptableObjectDataList[0], scrollview, pathColumnWidth, columnWidths);
             for(int i = 0; i < scriptableObjectDataList.Count; i++)
@@ -85,8 +86,12 @@ namespace EnlitGames.ScriptableObjectTable
         {
             Label warning = rootVisualElement.Query<Label>("Warning");
             warning.text = "Some fields are not displayed because they are not serializable. You can make them serializable by adding the [SerializeField] attribute to them.";
-            warning.style.color = Color.red;
-            rootVisualElement.Add(warning);
+        }
+
+        void HideWarningForUndisplayedFields()
+        {
+            Label warning = rootVisualElement.Query<Label>("Warning");
+            warning.text = "";
         }
 
         void ShowHeader(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float pathColumnWidth, List<float> columnWidths)
@@ -147,132 +152,102 @@ namespace EnlitGames.ScriptableObjectTable
             }
         }
 
-        VisualElement MakeVisualElementForValue(object value)
+        VisualElement MakeVisualElementForValue(dynamic value)
         {
-            if(value == null)
-            {
-                return new Label("null");
-            }
             VisualElement visualElement = new Label(value.ToString());
-            if(value.GetType() == typeof(UnityEngine.Color))
+            if(value.GetType() == typeof(UnityEngine.Color) || value.GetType() == typeof(UnityEngine.Color32))
             {
                 visualElement = new ColorField();
-                ((ColorField)visualElement).SetValueWithoutNotify((Color)value);
-            }
-            if(value.GetType() == typeof(UnityEngine.Color32))
-            {
-                visualElement = new ColorField();
-                ((ColorField)visualElement).SetValueWithoutNotify((Color32)value);
+                ((ColorField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.Vector2))
             {
                 visualElement = new Vector2Field();
-                ((Vector2Field)visualElement).SetValueWithoutNotify((Vector2)value);
+                ((Vector2Field)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.Vector3))
             {
                 visualElement = new Vector3Field();
-                ((Vector3Field)visualElement).SetValueWithoutNotify((Vector3)value);
+                ((Vector3Field)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.Vector4))
             {
                 visualElement = new Vector4Field();
-                ((Vector4Field)visualElement).SetValueWithoutNotify((Vector4)value);
+                ((Vector4Field)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.Rect))
             {
                 visualElement = new RectField();
-                ((RectField)visualElement).SetValueWithoutNotify((Rect)value);
+                ((RectField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.Bounds))
             {
                 visualElement = new BoundsField();
-                ((BoundsField)visualElement).SetValueWithoutNotify((Bounds)value);
+                ((BoundsField)visualElement).SetValueWithoutNotify(value);
             }
-            if(value.GetType() == typeof(UnityEngine.Object))
+            if(value.GetType() == typeof(UnityEngine.Transform) || value.GetType() == typeof(UnityEngine.Object) || 
+               value.GetType() == typeof(UnityEngine.GameObject) || value.GetType() == typeof(UnityEngine.Component) || 
+               value.GetType().IsSubclassOf(typeof(ScriptableObject)) || value.GetType() == typeof(Sprite))
             {
                 visualElement = new ObjectField();
-                ((ObjectField)visualElement).objectType = typeof(UnityEngine.Object);
-                ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Object)value);
-            }
-            if(value.GetType() == typeof(UnityEngine.GameObject))
-            {
-                visualElement = new ObjectField();
-                ((ObjectField)visualElement).objectType = typeof(UnityEngine.GameObject);
-                ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.GameObject)value);
-            }
-            if(value.GetType() == typeof(UnityEngine.Component))
-            {
-                visualElement = new ObjectField();
-                ((ObjectField)visualElement).objectType = typeof(UnityEngine.Component);
-                ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Component)value);
-            }
-            if(value.GetType() == typeof(UnityEngine.Transform))
-            {
-                visualElement = new ObjectField();
-                ((ObjectField)visualElement).objectType = typeof(UnityEngine.Transform);
-                ((ObjectField)visualElement).SetValueWithoutNotify((UnityEngine.Transform)value);
-            }
-            if(value.GetType() == typeof(Sprite))
-            {
-                visualElement = new ObjectField();
-                ((ObjectField)visualElement).objectType = typeof(Sprite);
-                ((ObjectField)visualElement).SetValueWithoutNotify((Sprite)value);
+                ((ObjectField)visualElement).objectType = value.GetType();
+                ((ObjectField)visualElement).SetValueWithoutNotify(value);
+                ((ObjectField)visualElement).allowSceneObjects = false;
             }
             if(value.GetType() == typeof(UnityEngine.AnimationCurve))
             {
                 visualElement = new CurveField();
-                ((CurveField)visualElement).SetValueWithoutNotify((AnimationCurve)value);
+                ((CurveField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.Gradient))
             {
                 visualElement = new GradientField();
-                ((GradientField)visualElement).SetValueWithoutNotify((Gradient)value);
+                ((GradientField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.LayerMask))
             {
                 visualElement = new LayerMaskField();
-                ((LayerMaskField)visualElement).SetValueWithoutNotify((LayerMask)value);
+                ((LayerMaskField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.RectInt))
             {
                 visualElement = new RectIntField();
-                ((RectIntField)visualElement).SetValueWithoutNotify((RectInt)value);
+                ((RectIntField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(UnityEngine.BoundsInt))
             {
                 visualElement = new BoundsIntField();
-                ((BoundsIntField)visualElement).SetValueWithoutNotify((BoundsInt)value);
+                ((BoundsIntField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(Enum) || value.GetType().IsEnum)
             {
                 visualElement = new EnumField();
-                ((EnumField)visualElement).SetValueWithoutNotify((Enum)value);
+                ((EnumField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(bool))
             {
                 visualElement = new Toggle();
-                ((Toggle)visualElement).SetValueWithoutNotify((bool)value);
+                ((Toggle)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(int))
             {
                 visualElement = new IntegerField();
-                ((IntegerField)visualElement).SetValueWithoutNotify((int)value);
+                ((IntegerField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(float))
             {
                 visualElement = new FloatField();
-                ((FloatField)visualElement).SetValueWithoutNotify((float)value);
+                ((FloatField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(double))
             {
                 visualElement = new DoubleField();
-                ((DoubleField)visualElement).SetValueWithoutNotify((double)value);
+                ((DoubleField)visualElement).SetValueWithoutNotify(value);
             }
             if(value.GetType() == typeof(string) || value.GetType() == typeof(String) || value.GetType() == typeof(char))
             {
                 visualElement = new TextField();
-                ((TextField)visualElement).SetValueWithoutNotify((string)value);
+                ((TextField)visualElement).SetValueWithoutNotify(value);
             }
             
             return visualElement;
@@ -328,6 +303,7 @@ namespace EnlitGames.ScriptableObjectTable
             List<FieldInfo> fields = new List<FieldInfo>(ScriptableObjectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
             //remove fields that are not supported
             List<FieldInfo> invalidFieldsRemoved = new List<FieldInfo>(fields);
+            showWarningForUndisplayedFields = false;
             foreach(var field in fields)
             {
                 SerializedObject so = new SerializedObject(scriptableObjectInstance);
