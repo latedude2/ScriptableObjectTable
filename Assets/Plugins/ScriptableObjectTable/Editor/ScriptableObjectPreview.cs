@@ -12,6 +12,7 @@ namespace EnlitGames.ScriptableObjectTable
         static ScriptableObject selectedScriptableObject;
         static bool showWarningForUndisplayedFields = false;
         static bool hideReadOnlyFields = false;
+        bool scale_swap;
         
         [MenuItem("Enlit Games/Scriptable Object Table")]
         public static void ShowExample()
@@ -47,6 +48,7 @@ namespace EnlitGames.ScriptableObjectTable
         {
             hideReadOnlyFields = newValue;
             PopulateTable(selectedScriptableObject);
+            ForceUpdateScrollViewScale();
         }
 
         void PopulateTable(ScriptableObject newSelectedScriptableObject)
@@ -336,6 +338,17 @@ namespace EnlitGames.ScriptableObjectTable
                 
             return invalidFieldsRemoved;
 
+        }
+        void ForceUpdateScrollViewScale()
+        {
+            //this is a hack-fix for a bug in the scrollview where it doesn't update the scrollbars when the scale changes.
+            //https://forum.unity.com/threads/how-to-refresh-scrollview-scrollbars-to-reflect-changed-content-width-and-height.1260920/
+            //https://issuetracker.unity3d.com/issues/uitoolkit-scrollview-scroll-bars-arent-refreshed-after-changing-its-size
+            var new_len = new StyleLength(UnityEngine.UIElements.Length.Percent(scale_swap ? 99.9f : 100f));
+            ScrollView scroll_view = rootVisualElement.Q<ScrollView>();
+            scroll_view.style.width = new_len;
+            scroll_view.style.height = new_len;
+            scale_swap = !scale_swap;
         }
     }
 }
