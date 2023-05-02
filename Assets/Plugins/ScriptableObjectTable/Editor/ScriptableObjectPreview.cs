@@ -9,6 +9,8 @@ namespace EnlitGames.ScriptableObjectTable
 {
     public class ScriptableObjectPreview : EditorWindow
     {
+        static Color greyBackgroundColor = new Color(0.16f, 0.16f, 0.16f);
+        static Color defaultBackgroundColor = new Color(0.2f, 0.2f, 0.2f);
         static ScriptableObject selectedScriptableObject;
         static bool showWarningForUndisplayedFields = false;
         static bool hideReadOnlyFields = false;
@@ -24,11 +26,7 @@ namespace EnlitGames.ScriptableObjectTable
         public void CreateGUI()
         {
             showWarningForUndisplayedFields = false;
-
-            // Each editor window contains a root VisualElement object.
             VisualElement root = rootVisualElement;
-            
-            // Import UXML.
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Plugins/ScriptableObjectTable/Editor/ScriptableObjectPreview.uxml");
             VisualElement ScriptableObjectTable = visualTree.Instantiate();
             root.Add(ScriptableObjectTable);
@@ -80,7 +78,8 @@ namespace EnlitGames.ScriptableObjectTable
             ShowHeader(scriptableObjectDataList[0], scrollview, pathColumnWidth, columnWidths);
             for(int i = 0; i < scriptableObjectDataList.Count; i++)
             {
-                ShowScriptableObjectInstance(scriptableObjectDataList[i], scrollview, pathColumnWidth, columnWidths);
+                bool colorRowGrey = i % 2 == 0;
+                ShowScriptableObjectInstance(scriptableObjectDataList[i], scrollview, pathColumnWidth, columnWidths, colorRowGrey);
             }
         }
         
@@ -110,20 +109,20 @@ namespace EnlitGames.ScriptableObjectTable
                 Label fieldHeader = new Label(scriptableObjectData.fields[i].Name);
                 fieldHeader.style.width = columnWidths[i];
 
-                if(i % 2 == 0)
-                {
-                    fieldHeader.style.backgroundColor = new Color(0.3f, 0.3f, 0.3f);
-                }
                 headerRow.Add(fieldHeader);
             }
         }
 
-        void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float columnWidth, List<float> columnWidths)
+        void ShowScriptableObjectInstance(ScriptableObjectData scriptableObjectData, VisualElement scrollview, float columnWidth, List<float> columnWidths, bool colorRowGrey)
         {
             VisualElement scriptableObjectInstanceRow = new VisualElement();
             scriptableObjectInstanceRow.style.flexDirection = FlexDirection.Row;
             scrollview.Add(scriptableObjectInstanceRow);
             Label pathLabel = new Label(scriptableObjectData.path);
+            if(colorRowGrey) 
+                pathLabel.style.backgroundColor = greyBackgroundColor;
+            else 
+                pathLabel.style.backgroundColor = defaultBackgroundColor;
             pathLabel.style.width = columnWidth;
             pathLabel.RegisterCallback<MouseUpEvent>((evt) => { Selection.activeObject = scriptableObjectData.scriptableObjectInstance; });
 
@@ -152,10 +151,35 @@ namespace EnlitGames.ScriptableObjectTable
                 element.style.width = columnWidths[i];
 
                 //set background of every second column to grey
-                if(i % 2 == 0)
+                if(colorRowGrey)
                 {
-                    element.style.backgroundColor = new Color(0.3f, 0.3f, 0.3f);
+                    element.style.backgroundColor = greyBackgroundColor;
+                    //get children and change their background color
+                    foreach(VisualElement child in element.Children())
+                    {
+                        child.style.backgroundColor = greyBackgroundColor;
+                        //get children and change their background color
+                        foreach(VisualElement grandChild in child.Children())
+                        {
+                            grandChild.style.backgroundColor = greyBackgroundColor;
+                        }
+                    }
                 }
+                else 
+                {
+                    element.style.backgroundColor = defaultBackgroundColor;
+                    //get children and change their background color
+                    foreach(VisualElement child in element.Children())
+                    {
+                        child.style.backgroundColor = defaultBackgroundColor;
+                        //get children and change their background color
+                        foreach(VisualElement grandChild in child.Children())
+                        {
+                            grandChild.style.backgroundColor = defaultBackgroundColor;
+                        }
+                    }
+                }
+                
                 scriptableObjectInstanceRow.Add(element);
             }
         }

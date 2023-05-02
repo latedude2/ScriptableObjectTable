@@ -19,14 +19,18 @@ MonoBehaviour:
   floatTest: 0
   stringTest: 
   boolTest: 0
-  vector3Test: {x: 0, y: 0.25, z: 1.92}
   vector2Test: {x: 0, y: 0}
+  vector3Test: {x: 0, y: 0.25, z: 1.92}
   vector4Test: {x: 0, y: 0, z: 0, w: 0}
   colorTest: {r: 0, g: 0, b: 0, a: 0}
   color32Test:
     serializedVersion: 2
     rgba: 0
-  quaternionTest: {x: 0, y: 0, z: 0, w: 0}
   transformTest: {fileID: 1818045450130897424, guid: cb63556878443c14986e516d9fdd6c75, type: 3}
   gameObjectTest: {fileID: 6005901847051753422, guid: cb63556878443c14986e516d9fdd6c75, type: 3}
   scriptableObject: {fileID: 11400000}
+  intArray: 
+  scriptableObjectArray: []
+  exampleSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  nestedClassTest:
+    testNestedInt: 0

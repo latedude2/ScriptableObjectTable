@@ -31,6 +31,6 @@ MonoBehaviour:
   scriptableObject: {fileID: 11400000}
   intArray: 
   scriptableObjectArray: []
-  exampleSprite: {fileID: 0}
+  exampleSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   nestedClassTest:
     testNestedInt: 26
