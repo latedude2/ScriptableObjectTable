@@ -1,5 +1,5 @@
 Label {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -7,7 +7,7 @@ Label {
 }
 
 Input {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -15,7 +15,7 @@ Input {
 }
 
 FloatField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -23,7 +23,7 @@ FloatField {
 }
 
 ColorField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -31,7 +31,7 @@ ColorField {
 }
 
 TextField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -39,7 +39,7 @@ TextField {
 }
 
 IntegerField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -47,7 +47,7 @@ IntegerField {
 }
 
 ObjectField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -55,7 +55,7 @@ ObjectField {
 }
 
 IntField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -63,7 +63,7 @@ IntField {
 }
 
 Vector2Field {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -71,7 +71,7 @@ Vector2Field {
 }
 
 Vector3Field {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -79,7 +79,7 @@ Vector3Field {
 }
 
 Vector4Field {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -87,7 +87,7 @@ Vector4Field {
 }
 
 DoubleField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -95,7 +95,7 @@ DoubleField {
 }
 
 Toggle {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -103,7 +103,7 @@ Toggle {
 }
 
 EnumField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -111,7 +111,7 @@ EnumField {
 }
 
 BoundsIntField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -119,7 +119,7 @@ BoundsIntField {
 }
 
 RectIntField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
@@ -127,7 +127,7 @@ RectIntField {
 }
 
 LayerMaskField {
-    font-size: 15px;
+    
     margin: 1px;
     padding: 0;
     border-width: 1px;
