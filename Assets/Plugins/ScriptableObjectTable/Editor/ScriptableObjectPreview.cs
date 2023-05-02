@@ -14,7 +14,7 @@ namespace EnlitGames.ScriptableObjectTable
         static ScriptableObject selectedScriptableObject;
         static bool showWarningForUndisplayedFields = false;
         static bool hideReadOnlyFields = false;
-        bool scale_swap;
+        bool scale_swap = true;
         
         [MenuItem("Enlit Games/Scriptable Object Table")]
         public static void ShowExample()
@@ -186,7 +186,14 @@ namespace EnlitGames.ScriptableObjectTable
 
         VisualElement MakeVisualElementForValue(dynamic value)
         {
-            VisualElement visualElement = new Label(value.ToString());
+            VisualElement visualElement;
+            if ((object)value != null)
+                visualElement = new Label(value.ToString());
+            else 
+            {
+                value = null;
+                visualElement = new Label("null");
+            }
             if(value.GetType() == typeof(UnityEngine.Color) || value.GetType() == typeof(UnityEngine.Color32))
             {
                 visualElement = new ColorField();

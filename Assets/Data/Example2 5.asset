@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed550856188fa4a47b58819f98f30bd5, type: 3}
-  m_Name: Example1
+  m_Name: Example2 5
   m_EditorClassIdentifier: 
-  cardName: Test
-  manaCost: 1
-  color: {r: 0, g: 0, b: 0, a: 0}
-  HP: 10
-  Speed: 5
-  Name: Script
-  respawns: 1
-  vector2Test: {x: 2.91, y: 2.52}
-  vector3Test: {x: 3.61, y: 0.67, z: 1.71}
-  vector4Test: {x: 3.21, y: 1.38, z: 1.83, w: 17.53}
-  colorTest: {r: 0.8962264, g: 0.20714669, b: 0.20714669, a: 0}
+  cardName: Example 2
+  manaCost: 10
+  color: {r: 0.3207547, g: 0.313742, b: 0.055980776, a: 0}
+  HP: 15
+  Speed: 6
+  Name: Easy
+  respawns: 0
+  vector2Test: {x: 0, y: 0}
+  vector3Test: {x: 0, y: 0.25, z: 1.92}
+  vector4Test: {x: 0, y: 0, z: 0, w: 0}
+  colorTest: {r: 0, g: 0, b: 0, a: 0}
   color32Test:
     serializedVersion: 2
     rgba: 0
@@ -31,6 +31,6 @@ MonoBehaviour:
   scriptableObject: {fileID: 11400000}
   intArray: 
   scriptableObjectArray: []
-  exampleSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  exampleSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
   nestedClassTest:
-    testNestedInt: 26
+    testNestedInt: 0

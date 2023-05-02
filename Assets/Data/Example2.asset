@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Example 2
   manaCost: 5
-  cardColor: {r: 0.8773585, g: 0.7738964, b: 0.7738964, a: 0}
-  intTest: 0
-  floatTest: 0
-  stringTest: 
-  boolTest: 0
+  color: {r: 1, g: 0, b: 0.70319223, a: 0}
+  HP: 50
+  Speed: 8
+  Name: Use
+  respawns: 0
   vector2Test: {x: 0, y: 0}
   vector3Test: {x: 0, y: 0.25, z: 1.92}
   vector4Test: {x: 0, y: 0, z: 0, w: 0}
