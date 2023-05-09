@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a73dcf31c5247158ca807d305cac9ba, type: 3}
+  m_Name: Encounter Data
+  m_EditorClassIdentifier: 
+  encounterRandomlyAtStage: 0
+  enemyEncounterList:
+  - name: Stage 1
+    stageId: 0
+    bossEncounterList:
+    - targetBackgroundType: 0
+      enemyList:
+      - {fileID: 11400000, guid: 2a3e3cac54ff7a84a81dc5f60d34fb2b, type: 2}
+      - {fileID: 11400000, guid: ac6937a4cc8afb94cac0a1ffdf9f72e0, type: 2}
+      - {fileID: 11400000, guid: 2a3e3cac54ff7a84a81dc5f60d34fb2b, type: 2}
+    enemyEncounterList:
+    - targetBackgroundType: 0
+      enemyList:
+      - {fileID: 11400000, guid: ab4b1aaf78f9c8747a5708430c68f051, type: 2}
+    - targetBackgroundType: 0
+      enemyList:
+      - {fileID: 11400000, guid: ab4b1aaf78f9c8747a5708430c68f051, type: 2}
+      - {fileID: 11400000, guid: ac6937a4cc8afb94cac0a1ffdf9f72e0, type: 2}
+    - targetBackgroundType: 0
+      enemyList:
+      - {fileID: 11400000, guid: ab4b1aaf78f9c8747a5708430c68f051, type: 2}
+      - {fileID: 11400000, guid: ac6937a4cc8afb94cac0a1ffdf9f72e0, type: 2}
+      - {fileID: 11400000, guid: 2a3e3cac54ff7a84a81dc5f60d34fb2b, type: 2}

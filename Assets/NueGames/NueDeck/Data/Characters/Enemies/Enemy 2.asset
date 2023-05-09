@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2612027158f847538279f7d8f10dff91, type: 3}
+  m_Name: Enemy 2
+  m_EditorClassIdentifier: 
+  characterID: enemy_2
+  characterName: Enemy 2
+  characterDescription: Enemy Description
+  maxHealth: 30
+  enemyPrefab: {fileID: 243822687015991123, guid: 9fec376b8bc12e645a735f176747a31b, type: 3}
+  followAbilityPattern: 1
+  enemyAbilityList:
+  - name: Poison
+    intention: {fileID: 11400000, guid: e7deaaa3f01f8f54ab8c29a0ce3c8f31, type: 2}
+    hideActionValue: 0
+    actionList:
+    - actionType: 2
+      minActionValue: 3
+      maxActionValue: 3
+  - name: Block
+    intention: {fileID: 11400000, guid: b0b1e7f2f78bb444eb1666e4accf22ee, type: 2}
+    hideActionValue: 1
+    actionList:
+    - actionType: 3
+      minActionValue: 5
+      maxActionValue: 6
+  - name: Poison
+    intention: {fileID: 11400000, guid: e7deaaa3f01f8f54ab8c29a0ce3c8f31, type: 2}
+    hideActionValue: 0
+    actionList:
+    - actionType: 2
+      minActionValue: 4
+      maxActionValue: 4
+  - name: Poison
+    intention: {fileID: 11400000, guid: e7deaaa3f01f8f54ab8c29a0ce3c8f31, type: 2}
+    hideActionValue: 0
+    actionList:
+    - actionType: 2
+      minActionValue: 4
+      maxActionValue: 5
+  - name: Poison
+    intention: {fileID: 11400000, guid: e7deaaa3f01f8f54ab8c29a0ce3c8f31, type: 2}
+    hideActionValue: 0
+    actionList:
+    - actionType: 2
+      minActionValue: 5
+      maxActionValue: 6
+  - name: Block
+    intention: {fileID: 11400000, guid: b0b1e7f2f78bb444eb1666e4accf22ee, type: 2}
+    hideActionValue: 1
+    actionList:
+    - actionType: 3
+      minActionValue: 5
+      maxActionValue: 10
+  - name: Block
+    intention: {fileID: 11400000, guid: b0b1e7f2f78bb444eb1666e4accf22ee, type: 2}
+    hideActionValue: 1
+    actionList:
+    - actionType: 3
+      minActionValue: 10
+      maxActionValue: 20
