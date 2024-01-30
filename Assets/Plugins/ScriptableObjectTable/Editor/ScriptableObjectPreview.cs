@@ -16,7 +16,7 @@ namespace EnlitGames.ScriptableObjectTable
         static bool hideReadOnlyFields = false;
         bool scale_swap = true;
         
-        [MenuItem("Enlit Games/Scriptable Object Table")]
+        [MenuItem("Window/Scriptable Object Table")]
         public static void ShowExample()
         {
             var wnd = GetWindow<ScriptableObjectPreview>();
